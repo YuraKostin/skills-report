@@ -2,53 +2,26 @@ import React from 'react';
 
 import Header from './Header';
 import Skills from './Skills';
+import styled from 'styled-components';
 
-class Technology extends React.Component {
-    constructor(props) {
-        super(props);
+const StyledTechnology = styled.div`
+    width: 30%;
+    color: ${props => props.theme.secondary};
+    margin: 0 0 50px;
+`;
 
-        const {skills} = props;
-
-        this.state = {
-            skills,
-            percent: 0,
-        };
-    }
-
-    getSkillChangeHandler = (skillName) => () => {
-        const newSkills = [...this.state.skills];
-        const skillByName = newSkills.find(({name}) => name === skillName);
-
-        if (!skillByName) {
-            return;
-        }
-
-        skillByName.checked = !skillByName.checked;
-
-        const {length: skillsTotal} = newSkills;
-        const checkedSkillsCount = newSkills.filter(({checked}) => checked).length;
-        const percent = Math.round(checkedSkillsCount * 100 / skillsTotal);
-
-        this.setState({
-            skills: newSkills,
-            percent,
-        });
-    };
-
-    render() {
-        return (
-            <div className="technology">
-                <Header
-                    technologyName={this.props.technologyName}
-                    percent={this.state.percent}
-                />
-                <Skills
-                    getChangeHandler={this.getSkillChangeHandler}
-                    skills={this.state.skills}
-                />
-            </div>
-        );
-    }
-}
+const Technology = (props) => (
+    <StyledTechnology>
+        <Header
+            technologyName={props.technologyName}
+            percent={props.percent}
+            handleSkillDrop={props.getSkillDropHandler}
+        />
+        <Skills
+            getChangeHandler={props.getSkillChangeHandler}
+            skills={props.skills}
+        />
+    </StyledTechnology>
+);
 
 export default Technology;
